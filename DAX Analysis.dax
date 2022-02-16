@@ -1,0 +1,44 @@
+﻿--Date Set 1
+evaluate(SUMMARIZE(Sales,Products[ProductName],'Date'[Year],"Total Revenue",sum(Sales[Revenue])))
+order by Products[ProductName] & 'Date'[Year]
+
+
+--Date Set 2
+
+define 
+MEASURE sales[TotalprevYear]=CALCULATE(sum(Sales[Revenue]), PARALLELPERIOD('Date'[Date], -1,YEAR))
+MEASURE sales[TotalRev]=calculate(sum(sales[Revenue]))
+MEASURE sales[Percent]=(sales[TotalRev]/sales[TotalprevYear])-1
+
+
+EVALUATE(addcolumns(SUMMARIZE(Sales,'Date'[Year],"Total Rev this year",sum(Sales[Revenue])),"Percentage Increase",sales[Percent]))
+
+
+--Data set 3
+
+
+define 
+MEASURE sales[Totrev]=sum(Sales[Revenue])
+MEASURE sales[TotalRevLifeinsurance]=CALCULATE(sum(Sales[Revenue]),products[Division]= "Life Insurance")
+MEASURE sales[TotalRevHealthnsurance]=CALCULATE(sum(Sales[Revenue]),products[Division]= "Health Insurance")
+MEASURE sales[TotalRevPropertyinsurance]=CALCULATE(sum(Sales[Revenue]),products[Division]= "Property Insurance")
+MEASURE sales[PercentLifeIn]=round(sales[TotalRevLifeinsurance]/sales[Totrev],2)
+MEASURE sales[PercentHealthIn]=round(sales[TotalRevHealthnsurance]/sales[Totrev],2)
+MEASURE sales[PercentPropIn]=round(sales[TotalRevPropertyinsurance]/sales[Totrev],2)
+
+EVALUATE(addcolumns(SUMMARIZE(Sales,'Date'[Year],"Total Rev this year",sum(Sales[Revenue])),"Life Insurance",sales[PercentLifeIn],"Health Insurance",sales[PercentHealthIn],"Property Insurance",sales[PercentPropIn]))
+
+
+
+--Data Set summarize by region
+
+
+evaluate(SUMMARIZE(Sales,Customers[Region],"Total Revenue",sum(Sales[Revenue])))
+order by Customers[Region] 
+
+
+
+
+
+
+
