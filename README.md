@@ -1,4 +1,4 @@
-# Happy_Insurance
+# Happy_Insurance - Case Study
 Happy Insurance Sales Data Analysis from years 2011-2013.
 
 1. Analysis for finding behavior and pattern in the sales database by combine Measure:
